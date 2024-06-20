@@ -1,0 +1,29 @@
+#user {
+    width: 30%;
+    margin: auto;
+}
+
+#user img,h1 {
+    width: 100px;
+    height: 100px;
+    margin: auto;
+}
+
+#myFrom {
+    width: 50%;
+    margin: auto;
+}
+
+#myFrom input {
+    width: 50%;
+    margin: 30px auto;
+}
+
+#myFrom #form-submit {
+    margin-left: 45%;
+}
+
+#myTable {
+    width: 60%;
+    margin: auto;
+}

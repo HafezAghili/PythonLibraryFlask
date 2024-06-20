@@ -1,3 +1,4 @@
+from controller.exceptions.exceptions import NoBookError
 from model.data_access.da import Da
 from model.entity.book import Book
 
@@ -23,4 +24,4 @@ class BookDa(Da):
                 book_list.append(book)
             return book_list
         else:
-            raise ValueError("No Person Found !")
+            raise NoBookError
