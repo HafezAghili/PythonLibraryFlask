@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Loans</title>
+    <style>
+        /* اضافه کردن استایل‌ها به اینجا */
+    </style>
+</head>
+<body>
+    <h1>Borrow a Book</h1>
+    <form action="/loans" method="POST">
+        <label for="user_id">User ID:</label>
+        <input type="text" id="user_id" name="user_id" required><br>
+        <label for="book_id">Book ID:</label>
+        <select id="book_id" name="book_id" required>
+            {% for book in books %}
+            <option value="{{ book.id }}">{{ book.title }}</option>
+            {% endfor %}
+        </select><br>
+        <input type="submit" value="Borrow Book">
+    </form>
+
+    <h1>Loans List</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>User ID</th>
+                <th>Book Title</th>
+                <th>Loan Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for loan in loans %}
+            <tr>
+                <td>{{ loan.user_id }}</td>
+                <td>{{ loan.book.title }}</td>
+                <td>{{ loan.loan_date }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

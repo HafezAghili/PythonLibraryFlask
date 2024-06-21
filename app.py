@@ -1,7 +1,9 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 import urllib.parse
 from sqlalchemy.orm import sessionmaker
 from model.entity.user import User
+from model.entity.book import Book
+from model.entity.loan import Loan
 from controller.user_controller import UserController
 from sqlalchemy import create_engine
 
@@ -67,6 +69,44 @@ def edit_user():
         return render_template("panel.html", user=user)
     else:
         return render_template("edit-error.html")
+
+
+@app.route("/books", methods=["GET", "POST"])
+def books():
+    session = Session()
+    if request.method == "POST":
+        title = request.form.get("title")
+        author = request.form.get("author")
+        pubdate = request.form.get("pubdate")
+        language = request.form.get("language")
+        isbn = request.form.get("isbn")
+
+        new_book = Book(title=title, author=author, pubdate=pubdate, language=language, isbn=isbn)
+        session.add(new_book)
+        session.commit()
+        return redirect(url_for("books"))
+    
+    books = session.query(Book).all()
+    return render_template("books.html", books=books)
+
+@app.route("/loans", methods=["GET", "POST"])
+def loans():
+    session = Session()
+    if request.method == "POST":
+        user_id = request.form.get("user_id")
+        book_id = request.form.get("book_id")
+        loan_date = datetime.now()
+        
+        new_loan = Loan(user_id=user_id, book_id=book_id, loan_date=loan_date)
+        session.add(new_loan)
+        session.commit()
+        return redirect(url_for("loans"))
+
+    loans = session.query(Loan).all()
+    books = session.query(Book).all()
+    return render_template("loans.html", loans=loans, books=books)
+
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
