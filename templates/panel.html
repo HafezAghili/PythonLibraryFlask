@@ -28,6 +28,79 @@
         .profile-info p {
             margin-bottom: 10px;
         }
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .button-container a {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 5px;
+            border: 1px solid #007bff;
+            border-radius: 5px;
+            text-decoration: none;
+            color: white;
+            background-color: #007bff;
+            transition: background-color 0.3s ease;
+        }
+        .button-container a:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome</h1>
+        <div class="profile-info">
+            <p><strong>Name:</strong> {{ name }}</p>
+            <p><strong>Role:</strong> {{ role }}</p>
+            <p><strong>Email:</strong> {{ email }}</p>
+            <p><strong>Phone:</strong> {{ phone }}</p>
+        </div>
+        <div class="button-container">
+            <a href="/books">Books</a>
+            <a href="/loans">Loans</a>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #f9f9f9;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .profile-info {
+            margin-top: 20px;
+        }
+        .profile-info p {
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
@@ -41,4 +114,4 @@
         </div>
     </div>
 </body>
-</html>
+</html> -->

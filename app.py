@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
 import urllib.parse
 from sqlalchemy.orm import sessionmaker
 from model.entity.user import User
@@ -19,12 +19,27 @@ connection_string = f"mysql+pymysql://{username}:{encoded_password}@localhost:33
 engine = create_engine(connection_string)
 Session = sessionmaker(bind=engine)
 
-@app.route("/")
+# @app.route("/")
+# def login():
+#     return render_template("login.html")
+
+@app.route("/", methods=["GET", "POST"])
 def login():
+    if request.method == "POST":
+        name = request.form.get("name")
+        password = request.form.get("password")
+        session_db = Session()
+        user = session_db.query(User).filter_by(name=name, password=password).first()
+        if user:
+            session['user_id'] = user.id  
+            session['username'] = user.name  
+            return redirect(url_for("loans"))
+        else:
+            return "Login failed"
     return render_template("login.html")
 
-@app.route("/sign_in", methods=["POST"])
-def sign_in():
+@app.route("/panel", methods=["POST"])
+def panel():
     name = request.form.get("name")
     password = request.form.get("password")
     status, users = UserController.find_by_username_and_password(name, password)
@@ -89,24 +104,58 @@ def books():
     books = session.query(Book).all()
     return render_template("books.html", books=books)
 
+# @app.route("/loans", methods=["GET", "POST"])
+# def loans():
+#     session = Session()
+#     if request.method == "POST":
+#         user_id = request.form.get("user_id")
+#         book_id = request.form.get("book_id")
+#         loan_date = datetime.now()
+        
+#         new_loan = Loan(user_id=user_id, book_id=book_id, loan_date=loan_date)
+#         session.add(new_loan)
+#         session.commit()
+#         return redirect(url_for("loans"))
+
+#     loans = session.query(Loan).all()
+#     books = session.query(Book).all()
+#     return render_template("loans.html", loans=loans, books=books)
+
+
 @app.route("/loans", methods=["GET", "POST"])
 def loans():
-    session = Session()
+    session_db = Session()
     if request.method == "POST":
-        user_id = request.form.get("user_id")
+        user_id = request.form.get("user_id") 
         book_id = request.form.get("book_id")
-        loan_date = datetime.now()
+        loan_date = request.form.get("loan_date")
         
-        new_loan = Loan(user_id=user_id, book_id=book_id, loan_date=loan_date)
-        session.add(new_loan)
-        session.commit()
+        new_loan = Loan(user_id=user_id, book_id=book_id, loandate=loan_date)
+        session_db.add(new_loan)
+        session_db.commit()
         return redirect(url_for("loans"))
 
-    loans = session.query(Loan).all()
-    books = session.query(Book).all()
-    return render_template("loans.html", loans=loans, books=books)
+    loans = session_db.query(Loan).all()
+    books = session_db.query(Book).all()
+    users = session_db.query(User).all()
+    return render_template("loans.html", loans=loans, books=books, users=users)
 
+# @app.route("/loans", methods=["GET", "POST"])
+# def loans():
+#     session_db = Session()
+#     if request.method == "POST":
+#         user_id = session.get('user_id')  # گرفتن user_id از session
+#         book_id = request.form.get("book_id")
+#         loandate = request.form.get("loandate")
+        
+#         new_loan = Loan(user_id=user_id, book_id=book_id, loandate=loandate)
+#         session_db.add(new_loan)
+#         session_db.commit()
+#         return redirect(url_for("loans"))
 
+#     loans = session_db.query(Loan).all()
+#     books = session_db.query(Book).all()
+#     return render_template("loans.html", loans=loans, books=books)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)

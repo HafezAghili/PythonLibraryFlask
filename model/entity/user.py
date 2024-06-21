@@ -14,7 +14,7 @@ class User(Base):
     phone = Column(String(50), unique=True)
     password = Column(String(20), nullable=False)
     joindate = Column(DateTime, default=lambda: datetime.now(timezone.utc))
-    loans = relationship(Loan, backref="user")
+    loans = relationship('Loan', backref='user_loans')
 
     def __init__(self, name, role, email, phone, password):
         self.id = None

@@ -2,43 +2,343 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Loans</title>
     <style>
-        /* اضافه کردن استایل‌ها به اینجا */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333333;
+            text-align: center;
+        }
+        form {
+            margin-bottom: 30px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555555;
+        }
+        input[type="text"],
+        input[type="date"],
+        select,
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #cccccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        input[type="submit"] {
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #dddddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
     </style>
 </head>
 <body>
-    <h1>Borrow a Book</h1>
-    <form action="/loans" method="POST">
-        <label for="user_id">User ID:</label>
-        <input type="text" id="user_id" name="user_id" required><br>
-        <label for="book_id">Book ID:</label>
-        <select id="book_id" name="book_id" required>
-            {% for book in books %}
-            <option value="{{ book.id }}">{{ book.title }}</option>
-            {% endfor %}
-        </select><br>
-        <input type="submit" value="Borrow Book">
-    </form>
+    <div class="container">
+        <h1>Borrow a Book</h1>
+        <form action="/loans" method="POST">
+            <label for="username">Username:</label>
+            <select id="user_id" name="user_id" required>
+                {% for user in users %}
+                <option value="{{ user.id }}">{{ user.name }}</option>
+                {% endfor %}
+            </select>
+            <label for="book_id">Book ID:</label>
+            <select id="book_id" name="book_id" required>
+                {% for book in books %}
+                <option value="{{ book.id }}">{{ book.title }}</option>
+                {% endfor %}
+            </select>
+            <label for="loan_date">Loan Date:</label>
+            <input type="date" id="loan_date" name="loan_date" required>
+            <input type="submit" value="Borrow Book">
+        </form>
 
-    <h1>Loans List</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>User ID</th>
-                <th>Book Title</th>
-                <th>Loan Date</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for loan in loans %}
-            <tr>
-                <td>{{ loan.user_id }}</td>
-                <td>{{ loan.book.title }}</td>
-                <td>{{ loan.loan_date }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+        <h1>Loans List</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Book Title</th>
+                    <th>Loan Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for loan in loans %}
+                <tr>
+                    <td>{{ loan.user.name }}</td>
+                    <td>{{ loan.book.title }}</td>
+                    <td>{{ loan.loandate }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>
+
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loans</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333333;
+            text-align: center;
+        }
+        form {
+            margin-bottom: 30px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555555;
+        }
+        input[type="text"],
+        input[type="date"],
+        select,
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #cccccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        input[type="submit"] {
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #dddddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Borrow a Book</h1>
+        <form action="/loans" method="POST">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" value="{{ session['username'] }}" readonly>
+            <input type="hidden" id="user_id" name="user_id" value="{{ session['user_id'] }}">
+            <label for="book_id">Book ID:</label>
+            <select id="book_id" name="book_id" required>
+                {% for book in books %}
+                <option value="{{ book.id }}">{{ book.title }}</option>
+                {% endfor %}
+            </select>
+            <label for="loan_date">Loan Date:</label>
+            <input type="date" id="loan_date" name="loan_date" required>
+            <input type="submit" value="Borrow Book">
+        </form>
+
+        <h1>Loans List</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Book Title</th>
+                    <th>Loan Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for loan in loans %}
+                <tr>
+                    <td>{{ loan.user.name }}</td>
+                    <td>{{ loan.book.title }}</td>
+                    <td>{{ loan.loandate }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html> -->
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Loans</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333333;
+            text-align: center;
+        }
+        form {
+            margin-bottom: 30px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555555;
+        }
+        input[type="text"],
+        input[type="date"],
+        select,
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #cccccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        input[type="submit"] {
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #dddddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Borrow a Book</h1>
+        <form action="/loans" method="POST">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" value="{{ session['username'] }}" readonly>
+            <input type="hidden" id="user_id" name="user_id" value="{{ session['user_id'] }}">
+            <label for="book_id">Book ID:</label>
+            <select id="book_id" name="book_id" required>
+                {% for book in books %}
+                <option value="{{ book.id }}">{{ book.title }}</option>
+                {% endfor %}
+            </select>
+            <label for="loan_date">Loan Date:</label>
+            <input type="date" id="loan_date" name="loan_date" required>
+            <input type="submit" value="Borrow Book">
+        </form>
+
+        <h1>Loans List</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Book Title</th>
+                    <th>Loan Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for loan in loans %}
+                <tr>
+                    <td>{{ loan.user.name }}</td>
+                    <td>{{ loan.book.title }}</td>
+                    <td>{{ loan.loandate }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html> -->

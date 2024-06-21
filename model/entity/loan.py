@@ -10,8 +10,10 @@ class Loan(Base):
     book_id = Column(Integer, ForeignKey('books.id'))
     user_id = Column(Integer, ForeignKey('users.id'))
     loandate = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    user = relationship('User', backref='loan_user')
+    book = relationship('Book', backref='loan_book')
 
-    def __init__(self, book_id, user_id):
+    def __init__(self, book_id, user_id, loandate):
         self.id = None
         self.book_id = book_id
         self.user_id = user_id
